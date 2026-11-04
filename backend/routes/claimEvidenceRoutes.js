@@ -1,31 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-// GET all claim evidence records (temporary test)
-router.get('/', (req, res) => {
-    res.json({
-        message: 'Claim Evidence API is working!'
-    });
-});
+const claimEvidenceController = require('../controllers/claimEvidenceController');
 
-// POST claim evidence (temporary test)
-router.post('/', (req, res) => {
-    const { claim_id, evidence_details } = req.body;
+// GET all claim evidence records
+router.get('/', claimEvidenceController.getAllEvidence);
 
-    // Validate required fields
-    if (!claim_id || !evidence_details) {
-        return res.status(400).json({
-            message: 'Claim ID and evidence details are required!'
-        });
-    }
-
-    res.status(201).json({
-        message: 'Claim evidence submitted successfully!',
-        evidence: {
-            claim_id,
-            evidence_details
-        }
-    });
-});
+// POST new claim evidence
+router.post('/', claimEvidenceController.addEvidence);
 
 module.exports = router;

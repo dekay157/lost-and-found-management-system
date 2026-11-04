@@ -1,54 +1,18 @@
 const express = require('express');
 const router = express.Router();
 
-// GET all notifications (temporary test)
-router.get('/', (req, res) => {
-    res.json({
-        message: 'Notification API is working!'
-    });
-});
+const notificationController = require('../controllers/notificationController');
 
-// GET notifications by user ID (temporary test)
-router.get('/user/:user_id', (req, res) => {
-    const { user_id } = req.params;
+// GET all notifications
+router.get('/', notificationController.getAllNotifications);
 
-    res.json({
-        message: 'User notifications retrieved successfully!',
-        user_id: user_id
-    });
-});
+// GET notifications by user ID
+router.get('/user/:user_id', notificationController.getNotificationsByUserId);
 
-// PUT mark notification as read (temporary test)
-router.put('/:notification_id/read', (req, res) => {
-    const { notification_id } = req.params;
+// POST a new notification
+router.post('/', notificationController.addNotification);
 
-    res.json({
-        message: 'Notification marked as read successfully!',
-        notification_id: notification_id,
-        read_status: 1
-    });
-});
-
-// POST a new notification (temporary test)
-router.post('/', (req, res) => {
-    const { user_id, message } = req.body;
-
-    // Validate required fields
-    if (!user_id || !message) {
-        return res.status(400).json({
-            message: 'User ID and notification message are required!'
-        });
-    }
-
-    res.status(201).json({
-        message: 'Notification created successfully!',
-        notification: {
-            user_id,
-            message,
-            read_status: 0,
-            notification_date: new Date()
-        }
-    });
-});
+// PUT mark notification as read
+router.put('/:notification_id/read', notificationController.markAsRead);
 
 module.exports = router;
